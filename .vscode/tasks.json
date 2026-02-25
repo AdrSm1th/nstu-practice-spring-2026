@@ -1,0 +1,62 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "uv: ruff format",
+            "type": "shell",
+            "command": "uv run ruff format",
+            "problemMatcher": [],
+            "detail": "Format code with Ruff"
+        },
+        {
+            "label": "uv: ruff check",
+            "type": "shell",
+            "command": "uv run ruff check",
+            "problemMatcher": [],
+            "detail": "Check code with Ruff"
+        },
+        {
+            "label": "uv: ty check",
+            "type": "shell",
+            "command": "uv run ty check",
+            "problemMatcher": [],
+            "detail": "Check types with ty"
+        },
+        {
+            "label": "uv: lint",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "uv: ruff format",
+                "uv: ruff check",
+                "uv: ty check"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "detail": "Lint code with Ruff & ty"
+        },
+        {
+            "label": "uv: pytest",
+            "type": "shell",
+            "command": "uv run pytest",
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "detail": "Test code with pytest"
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "find . -type d -name '__pycache__' -exec rm -rf {} +; rm -rf .ruff_cache .pytest_cache",
+            "problemMatcher": [],
+            "detail": "Clean caches"
+        }
+    ]
+}
