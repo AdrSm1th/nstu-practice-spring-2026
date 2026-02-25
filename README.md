@@ -8,3 +8,8 @@
 ## Lint & Test
 1. Для запуска всех линтеров: **Run Build Task** (Ctrl+Shift+B). 
 2. Для запуска всех тестов: **Run Test Task**.
+
+## Полезные ссылки
+1. https://numpy.org/doc/stable/user/quickstart.html
+2. https://matplotlib.org/stable/tutorials/pyplot.html
+3. https://pandas.pydata.org/docs/user_guide/10min.html
