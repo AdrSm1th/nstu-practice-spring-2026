@@ -10,7 +10,7 @@ class LinearRegression:
         self.bias = np.array(0.0)
 
     def predict(self, x: np.ndarray) -> np.ndarray:
-        return x @ self.weights + self.bias 
+        return x @ self.weights + self.bias
 
     def loss(self, x: np.ndarray, y: np.ndarray) -> float:
         return np.mean((y - self.predict(x)) ** 2)
@@ -39,13 +39,24 @@ class LogisticRegression:
         return 1 / (1 + np.exp(-z))
 
     def loss(self, x: np.ndarray, y: np.ndarray) -> float:
-        return 0
+        predict = self.predict(x)
+        return -np.mean(y * np.log(predict) + (1 - y) * np.log(1 - predict))
 
     def metric(self, x: np.ndarray, y: np.ndarray) -> float:
-        return 0
+        predict = self.predict(x)
+        count = 0
+        for i in range(y.size):
+            if y[i] == 1 and predict[i] >= 0.5 or y[i] == 0 and predict[i] < 0.5:
+                count += 1
+        return count / y.size
 
     def grad(self, x, y) -> tuple[np.ndarray, np.ndarray]:
-        return np.zeros_like(self.weights), np.zeros_like(self.bias)
+        weightsGrad = np.ndarray(self.weights.size)
+        biasGrad = np.ndarray(self.bias.size)
+        predict = self.predict(x)
+        biasGrad = np.sum(predict - y) / x.shape[0]
+        weightsGrad = np.sum((predict - y) @ x) / x.shape[0]
+        return weightsGrad, biasGrad
 
 
 class Exercise:
@@ -67,8 +78,7 @@ class Exercise:
 
     @staticmethod
     def fit(model: LinearRegression | LogisticRegression, x: np.ndarray, y: np.ndarray, lr: float, n_iter: int) -> None:
-        n = y.size
-        for i in range(n_iter):
+        for _i in range(n_iter):
             weightsGrad = np.ndarray(model.weights.size)
             biasGrad = np.ndarray(model.bias.size)
             weightsGrad, biasGrad = model.grad(x, y)
